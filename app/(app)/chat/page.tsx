@@ -98,6 +98,10 @@ export default function ChatPage() {
 
   const suggestionChips = [
     "⚡ Create task: Polish landing page by tomorrow 4pm",
+    "✨ Decompose my highest risk sprint task",
+    "📅 How looks my morning schedule buffer?",
+  ];
+
   const handleCompleteTask = async (id: string) => {
     await updateDoc(doc(db, 'tasks', id), { status: 'completed', riskScore: 0 });
     toast.success('Task marked completed from chat feed!');
