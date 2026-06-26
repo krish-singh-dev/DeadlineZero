@@ -89,7 +89,11 @@ export function useAuth() {
   const loginWithGoogle = async () => {
     setError(null);
     try {
-      const result = await signInWithPopup(auth, googleProvider);
+      const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+      const timeoutDuration = isLocal ? 2000 : 90000;
+      const popupPromise = signInWithPopup(auth, googleProvider);
+      const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Firebase OAuth timeout')), timeoutDuration));
+      const result: any = await Promise.race([popupPromise, timeoutPromise]);
       return result.user;
     } catch (err: any) {
       console.warn('Firebase Auth popup offline/unconfigured. Engaging Mock Google Login:', err.message);

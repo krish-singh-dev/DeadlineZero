@@ -98,17 +98,13 @@ export default function ChatPage() {
 
   const suggestionChips = [
     "⚡ Create task: Polish landing page by tomorrow 4pm",
-    "✨ Decompose my highest risk sprint task",
-    "📅 How looks my morning schedule buffer?",
-  ];
-
   const handleCompleteTask = async (id: string) => {
     await updateDoc(doc(db, 'tasks', id), { status: 'completed', riskScore: 0 });
     toast.success('Task marked completed from chat feed!');
   };
 
   return (
-    <div className="flex flex-col h-screen max-w-5xl mx-auto p-4 lg:p-6 bg-[#0A0A0F]">
+    <div className="flex flex-col h-[calc(100vh-4rem)] md:h-screen max-w-5xl mx-auto p-4 lg:p-6 bg-[#0A0A0F]">
       {/* Top Telemetry Header */}
       <header className="p-4 rounded-2xl bg-[#111118] border border-white/5 flex items-center justify-between shrink-0 mb-4 shadow-lg">
         <div className="flex items-center gap-3">
@@ -130,7 +126,7 @@ export default function ChatPage() {
 
         <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-indigo-400 bg-indigo-500/10 px-3 py-1.5 rounded-xl border border-indigo-500/20">
           <Zap className="w-3.5 h-3.5 text-amber-400 animate-bounce" />
-          <span>Gemini 1.5 Flash</span>
+          <span>Gemini 2.5 Flash</span>
         </div>
       </header>
 
@@ -143,29 +139,52 @@ export default function ChatPage() {
             </div>
             <h3 className="text-lg font-bold text-white">How can I assist your sprint today, {profile?.name}?</h3>
             <p className="text-xs text-slate-400 leading-relaxed font-mono">
-              You can ask me to evaluate deadlines, break down daunting projects, or create tasks directly via voice or text.
+              Ask me to log work velocity, assess deadline slippage risks, or decompose ambiguous objectives into sprint issues.
             </p>
-
-            {/* Quick Chips */}
-            <div className="pt-4 flex flex-col gap-2 w-full">
-              {suggestionChips.map((chip, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => handleSendMessage(chip)}
-                  className="p-3 rounded-xl bg-[#16161F] hover:bg-indigo-600/20 border border-white/5 hover:border-indigo-500/30 text-xs text-left text-slate-300 hover:text-white transition-all font-mono"
-                >
-                  {chip}
-                </button>
-              ))}
+            <div className="flex flex-wrap gap-2 justify-center pt-2">
+              <button onClick={() => setInput("What are my highest risk tasks right now?")} className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 text-xs font-mono text-indigo-300 transition-colors">
+                &ldquo;Highest risk tasks?&rdquo;
+              </button>
+              <button onClick={() => setInput("Decompose monolithic backend refactor")} className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 text-xs font-mono text-indigo-300 transition-colors">
+                &ldquo;Decompose backend&rdquo;
+              </button>
             </div>
           </div>
         ) : (
-          messages.map((msg) => (
-            <ChatBubble
-              key={msg.id}
-              message={msg}
-              onCompleteTask={handleCompleteTask}
-            />
+          messages.map((msg, i) => (
+            <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} gap-3`}>
+              {msg.role !== 'user' && (
+                <div className="w-8 h-8 rounded-xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 shrink-0 mt-1">
+                  <Bot className="w-4 h-4" />
+                </div>
+              )}
+              <div className={`p-4 rounded-2xl max-w-[85%] sm:max-w-[75%] text-sm font-sans ${
+                msg.role === 'user'
+                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20 rounded-br-none'
+                  : 'bg-[#1C1C28] text-slate-200 border border-white/5 rounded-bl-none font-mono text-xs leading-relaxed space-y-2'
+              }`}>
+                {msg.role !== 'user' ? (
+                  <ReactMarkdown
+                    components={{
+                      a: ({ node, ...props }) => <a {...props} className="text-indigo-400 hover:underline font-bold" target="_blank" />,
+                      code: ({ node, ...props }) => <code {...props} className="bg-black/50 text-amber-300 px-1.5 py-0.5 rounded font-mono text-[11px]" />,
+                      p: ({ node, ...props }) => <p {...props} className="mb-2 last:mb-0" />,
+                    }}
+                  >
+                    {msg.content}
+                  </ReactMarkdown>
+                ) : (
+                  msg.content
+                )}
+                {/* @ts-ignore */}
+                {msg.actionsExecuted && msg.actionsExecuted.length > 0 && (
+                  <div className="pt-2 mt-2 border-t border-white/10 text-[10px] text-emerald-400 font-mono flex items-center gap-1">
+                    <ShieldCheck className="w-3 h-3" />
+                    <span>Database mutations autonomously committed</span>
+                  </div>
+                )}
+              </div>
+            </div>
           ))
         )}
 
@@ -179,7 +198,7 @@ export default function ChatPage() {
       </div>
 
       {/* Input Dictation & Text Bar */}
-      <div className="pt-4 shrink-0">
+      <div className="pt-4 shrink-0 pb-20 md:pb-4">
         <form
           onSubmit={(e) => {
             e.preventDefault();
