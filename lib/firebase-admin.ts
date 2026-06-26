@@ -121,7 +121,7 @@ class MockFirestore {
   }
 }
 
-const mockDbInstance = new MockFirestore();
+const mockDbInstance = (globalThis as any).__dz_mock_db || ((globalThis as any).__dz_mock_db = new MockFirestore());
 
 // Export robust DB instance
 export const adminDb = isRealAdminReady && adminCore?.firestore ? adminCore.firestore() : mockDbInstance;
