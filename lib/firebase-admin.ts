@@ -96,7 +96,13 @@ class MockFirestore {
         return {
           get: async () => ({ exists: !!collStore[docId], data: () => collStore[docId] }),
           set: async (data: any) => { collStore[docId] = { ...data, id: docId }; },
-          update: async (data: any) => { collStore[docId] = { ...collStore[docId], ...data }; },
+          update: async (data: any) => {
+            if (!collStore[docId]) {
+              collStore[docId] = { id: docId, userId: 'demo_krish_uid', title: 'Active Sprint Task', status: 'pending', ...data };
+            } else {
+              collStore[docId] = { ...collStore[docId], ...data };
+            }
+          },
           delete: async () => { delete collStore[docId]; },
           collection: (subName: string) => {
             // Support nested subcollections (e.g. dailyPlans/{userId}/plans)

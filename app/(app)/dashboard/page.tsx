@@ -82,12 +82,21 @@ export default function DashboardPage() {
       const data = await res.json();
       if (data.success) {
         toast.success('✨ Task decomposed autonomously!', { id: toastId });
+        setTasks(prev => prev.map(t => t.id === id ? { ...t, subtasks: data.data, aiDecomposed: true } : t));
       } else {
-        throw new Error(data.error?.message);
+        throw new Error(data.error?.message || 'Decomposition failed');
       }
     } catch (err: any) {
       toast.error(err.message || 'Decomposition failed', { id: toastId });
     }
+  };
+
+  const handleSubtaskToggle = async (taskId: string, subtaskId: string) => {
+    setTasks(prev => prev.map(t => {
+      if (t.id !== taskId) return t;
+      const updatedSubtasks = (t.subtasks || []).map(st => st.id === subtaskId ? { ...st, completed: !st.completed } : st);
+      return { ...t, subtasks: updatedSubtasks };
+    }));
   };
 
   const criticalTasks = tasks.filter(t => t.status !== 'completed' && t.riskScore >= 61);
@@ -213,6 +222,7 @@ export default function DashboardPage() {
                 task={task}
                 onComplete={handleCompleteTask}
                 onDecompose={handleDecomposeTask}
+                onSubtaskToggle={handleSubtaskToggle}
               />
             ))}
           </div>

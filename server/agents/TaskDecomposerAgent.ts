@@ -46,7 +46,8 @@ Respond STRICTLY in valid JSON matching this schema array:
         },
       });
 
-      const parsed: Array<{ title: string; estimatedHours: number }> = JSON.parse(result.response.text());
+      const rawText = result.response.text().replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '').trim();
+      const parsed: Array<{ title: string; estimatedHours: number }> = JSON.parse(rawText);
 
       const subtasks: SubTask[] = parsed.map((item) => ({
         id: crypto.randomUUID(),

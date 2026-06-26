@@ -126,11 +126,21 @@ export default function TasksPage() {
         headers: { Authorization: `Bearer ${idToken || 'demo_token'}` },
       });
       const data = await res.json();
-      if (data.success) toast.success('✨ Decomposed!', { id: toastId });
-      else throw new Error(data.error?.message);
+      if (data.success) {
+        toast.success('✨ Decomposed!', { id: toastId });
+        setTasks(prev => prev.map(t => t.id === id ? { ...t, subtasks: data.data, aiDecomposed: true } : t));
+      } else throw new Error(data.error?.message || 'Decomposition failed');
     } catch (err: any) {
       toast.error(err.message, { id: toastId });
     }
+  };
+
+  const handleSubtaskToggle = async (taskId: string, subtaskId: string) => {
+    setTasks(prev => prev.map(t => {
+      if (t.id !== taskId) return t;
+      const updatedSubtasks = (t.subtasks || []).map(st => st.id === subtaskId ? { ...st, completed: !st.completed } : st);
+      return { ...t, subtasks: updatedSubtasks };
+    }));
   };
 
   // Eisenhower Matrix Categorization with Crunch Simulation Drift
@@ -195,7 +205,7 @@ export default function TasksPage() {
       ) : viewMode === 'grid' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {tasks.map(t => (
-            <TaskCard key={t.id} task={t} onComplete={handleCompleteTask} onDecompose={handleDecomposeTask} />
+            <TaskCard key={t.id} task={t} onComplete={handleCompleteTask} onDecompose={handleDecomposeTask} onSubtaskToggle={handleSubtaskToggle} />
           ))}
         </div>
       ) : (
@@ -211,7 +221,7 @@ export default function TasksPage() {
               <span className="text-xs font-mono font-bold bg-red-500/10 text-red-400 px-2 py-0.5 rounded border border-red-500/20">{urgentCritical.length}</span>
             </div>
             <div className="space-y-4">
-              {urgentCritical.length === 0 ? <p className="text-xs text-slate-600 font-mono py-8 text-center">No critical risk tasks</p> : urgentCritical.map(t => <TaskCard key={t.id} task={t} onComplete={handleCompleteTask} onDecompose={handleDecomposeTask} />)}
+              {urgentCritical.length === 0 ? <p className="text-xs text-slate-600 font-mono py-8 text-center">No critical risk tasks</p> : urgentCritical.map(t => <TaskCard key={t.id} task={t} onComplete={handleCompleteTask} onDecompose={handleDecomposeTask} onSubtaskToggle={handleSubtaskToggle} />)}
             </div>
           </div>
 
@@ -225,7 +235,7 @@ export default function TasksPage() {
               <span className="text-xs font-mono font-bold bg-orange-500/10 text-orange-400 px-2 py-0.5 rounded border border-orange-500/20">{highPriority.length}</span>
             </div>
             <div className="space-y-4">
-              {highPriority.length === 0 ? <p className="text-xs text-slate-600 font-mono py-8 text-center">No high priority tasks</p> : highPriority.map(t => <TaskCard key={t.id} task={t} onComplete={handleCompleteTask} onDecompose={handleDecomposeTask} />)}
+              {highPriority.length === 0 ? <p className="text-xs text-slate-600 font-mono py-8 text-center">No high priority tasks</p> : highPriority.map(t => <TaskCard key={t.id} task={t} onComplete={handleCompleteTask} onDecompose={handleDecomposeTask} onSubtaskToggle={handleSubtaskToggle} />)}
             </div>
           </div>
 
@@ -236,7 +246,7 @@ export default function TasksPage() {
               <span className="text-xs font-mono font-bold bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded border border-amber-500/20">{steadyLow.length}</span>
             </div>
             <div className="space-y-4">
-              {steadyLow.length === 0 ? <p className="text-xs text-slate-600 font-mono py-8 text-center">No steady backlog tasks</p> : steadyLow.map(t => <TaskCard key={t.id} task={t} onComplete={handleCompleteTask} onDecompose={handleDecomposeTask} />)}
+              {steadyLow.length === 0 ? <p className="text-xs text-slate-600 font-mono py-8 text-center">No steady backlog tasks</p> : steadyLow.map(t => <TaskCard key={t.id} task={t} onComplete={handleCompleteTask} onDecompose={handleDecomposeTask} onSubtaskToggle={handleSubtaskToggle} />)}
             </div>
           </div>
 
@@ -247,7 +257,7 @@ export default function TasksPage() {
               <span className="text-xs font-mono font-bold bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20">{completedTasks.length}</span>
             </div>
             <div className="space-y-4">
-              {completedTasks.length === 0 ? <p className="text-xs text-slate-600 font-mono py-8 text-center">No completed tasks yet</p> : completedTasks.map(t => <TaskCard key={t.id} task={t} onComplete={handleCompleteTask} onDecompose={handleDecomposeTask} />)}
+              {completedTasks.length === 0 ? <p className="text-xs text-slate-600 font-mono py-8 text-center">No completed tasks yet</p> : completedTasks.map(t => <TaskCard key={t.id} task={t} onComplete={handleCompleteTask} onDecompose={handleDecomposeTask} onSubtaskToggle={handleSubtaskToggle} />)}
             </div>
           </div>
         </div>
