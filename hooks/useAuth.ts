@@ -94,7 +94,34 @@ export function useAuth() {
       const popupPromise = signInWithPopup(auth, googleProvider);
       const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Firebase OAuth timeout')), timeoutDuration));
       const result: any = await Promise.race([popupPromise, timeoutPromise]);
-      return result.user;
+      const gUser = result.user;
+
+      if (gUser) {
+        try {
+          const userDocRef = doc(db, 'users', gUser.uid);
+          const snap = await getDoc(userDocRef);
+          if (!snap.exists()) {
+            const initialProfile: UserProfile = {
+              uid: gUser.uid,
+              name: gUser.displayName || 'Google User',
+              email: gUser.email || '',
+              role: 'entrepreneur',
+              photoURL: gUser.photoURL || undefined,
+              createdAt: new Date().toISOString(),
+              preferences: { workingHours: { start: '09:00', end: '18:00' }, timezone: 'IST', focusDuration: 120, quietHours: { start: '22:00', end: '07:00' }, emailDigestEnabled: true },
+              behaviorProfile: { mostProductiveHours: [10, 14, 16], avgEstimationError: 1.15, procrastinationIndex: 20, strongestCategories: ['Core AI'] }
+            };
+            await setDoc(userDocRef, initialProfile);
+            setProfile(initialProfile);
+          } else {
+            setProfile(snap.data() as UserProfile);
+          }
+          setNeedsOnboarding(false);
+        } catch (dbErr) {
+          console.warn('Could not save Google profile to Firestore:', dbErr);
+        }
+      }
+      return gUser;
     } catch (err: any) {
       console.warn('Firebase Auth popup offline/unconfigured. Engaging Mock Google Login:', err.message);
       const mockGoogleUser = {
@@ -104,8 +131,7 @@ export function useAuth() {
         photoURL: 'https://api.dicebear.com/7.x/bottts/svg?seed=KrishGoogle',
         emailVerified: true,
       } as any;
-      setUser(mockGoogleUser);
-      setProfile({
+      const fallbackProfile: UserProfile = {
         uid: 'demo_krish_uid',
         name: 'Krish Singh',
         email: 'krish@deadlinezero.app',
@@ -113,7 +139,10 @@ export function useAuth() {
         createdAt: new Date().toISOString(),
         preferences: { workingHours: { start: '09:00', end: '18:00' }, timezone: 'IST', focusDuration: 120, quietHours: { start: '22:00', end: '07:00' }, emailDigestEnabled: true },
         behaviorProfile: { mostProductiveHours: [10, 14, 16], avgEstimationError: 1.15, procrastinationIndex: 20, strongestCategories: ['Core AI'] }
-      });
+      };
+      try { await setDoc(doc(db, 'users', 'demo_krish_uid'), fallbackProfile); } catch (e) {}
+      setUser(mockGoogleUser);
+      setProfile(fallbackProfile);
       setNeedsOnboarding(false);
       return mockGoogleUser;
     }
