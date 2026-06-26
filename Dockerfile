@@ -1,14 +1,14 @@
 # Google Cloud Run Production Multi-Stage Container Dockerfile (Node 20 Alpine)
 # Cites Rule 15 (Google Cloud Native Architecture) & Rule 1 (Zero Degradation)
 
-FROM node:20-alpine AS base
+FROM node:22-alpine AS base
 
 # 1. Dependencies stage
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json package-lock.json* ./
-RUN npm ci
+RUN npm install --no-audit --no-fund --legacy-peer-deps
 
 # 2. Builder stage (Compiles Next.js standalone app and Express gateway)
 FROM base AS builder
