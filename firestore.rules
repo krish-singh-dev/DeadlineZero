@@ -1,0 +1,61 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions for authentication and user ownership verification
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Users collection: Users can read and write only their own profile and preferences
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+      
+      // Subcollections under user (e.g. encrypted calendarTokens)
+      match /{allSubcollections=**} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    // Tasks collection: Strict user isolation by userId field
+    match /tasks/{taskId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+
+    // DailyPlans collection: Morning AI plans scoped by userId
+    match /dailyPlans/{userId}/{document=**} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // ChatSessions collection: Multi-turn AI chat history
+    match /chatSessions/{sessionId} {
+      allow read, update, delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+    }
+
+    // Goals collection: Long-term goal tracking
+    match /goals/{goalId} {
+      allow read, update, delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+    }
+
+    // Habits collection: Habit streak tracking
+    match /habits/{habitId} {
+      allow read, update, delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+    }
+
+    // Notifications collection: Real-time user notification feed
+    match /notifications/{notificationId} {
+      allow read, update, delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+    }
+  }
+}
