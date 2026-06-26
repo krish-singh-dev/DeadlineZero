@@ -59,6 +59,20 @@ export default function TasksPage() {
     return () => unsubscribe();
   }, [user]);
 
+  useEffect(() => {
+    const handleSync = async () => {
+      try {
+        const res = await fetch('/api/tasks');
+        const data = await res.json();
+        if (data.success && Array.isArray(data.data)) {
+          setTasks(data.data);
+        }
+      } catch (e) {}
+    };
+    window.addEventListener('dz_task_created', handleSync);
+    return () => window.removeEventListener('dz_task_created', handleSync);
+  }, []);
+
   const handleCreateTask = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title || !deadline) {

@@ -53,6 +53,20 @@ export default function DashboardPage() {
     return () => unsubscribe();
   }, [user]);
 
+  useEffect(() => {
+    const handleSync = async () => {
+      try {
+        const res = await fetch('/api/tasks');
+        const data = await res.json();
+        if (data.success && Array.isArray(data.data)) {
+          setTasks(data.data);
+        }
+      } catch (e) {}
+    };
+    window.addEventListener('dz_task_created', handleSync);
+    return () => window.removeEventListener('dz_task_created', handleSync);
+  }, []);
+
   const handleCompleteTask = async (id: string) => {
     try {
       if (user?.uid === 'demo_krish_uid') {

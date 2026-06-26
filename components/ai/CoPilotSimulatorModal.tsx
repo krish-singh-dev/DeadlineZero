@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, X, Zap, AlertTriangle, Clock, ShieldAlert, Disc, Play, Pause, Mic, TrendingUp } from 'lucide-react';
+import { Sparkles, X, Zap, AlertTriangle, Clock, ShieldAlert, Disc, Play, Pause, Mic } from 'lucide-react';
 import { VoiceInput } from '@/components/ai/VoiceInput';
 import toast from 'react-hot-toast';
 import Image from 'next/image';
@@ -17,20 +17,80 @@ export function CoPilotSimulatorModal({ isOpen, onClose, userName = 'Krish' }: C
   const [procrastinationHours, setProcrastinationHours] = useState<number>(0);
   const [isPlayingVibe, setIsPlayingVibe] = useState<boolean>(false);
   const [quickTaskTitle, setQuickTaskTitle] = useState<string>('');
+  const audioCtxRef = useRef<AudioContext | null>(null);
 
   const simulatedVelocityDrift = (1.15 + procrastinationHours * 0.18).toFixed(2);
   const simulatedRiskSurge = Math.min(100, Math.round(procrastinationHours * 14));
 
+  const toggleBinauralBeats = (play: boolean) => {
+    setIsPlayingVibe(play);
+    if (play) {
+      toast('🎧 Engaging 200Hz/214Hz Alpha Neural Focus Beats in stereo...', { icon: '🎧' });
+      try {
+        const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+        if (!AudioContextClass) return;
+        const ctx = new AudioContextClass();
+        audioCtxRef.current = ctx;
+
+        // Left ear tone: 200Hz
+        const oscL = ctx.createOscillator();
+        const gainL = ctx.createGain();
+        oscL.type = 'sine';
+        oscL.frequency.setValueAtTime(200, ctx.currentTime);
+        gainL.gain.setValueAtTime(0.12, ctx.currentTime);
+
+        // Right ear tone: 214Hz (Creates 14Hz Alpha focus binaural beat inside human brain)
+        const oscR = ctx.createOscillator();
+        const gainR = ctx.createGain();
+        oscR.type = 'sine';
+        oscR.frequency.setValueAtTime(214, ctx.currentTime);
+        gainR.gain.setValueAtTime(0.12, ctx.currentTime);
+
+        if (ctx.createStereoPanner) {
+          const panL = ctx.createStereoPanner();
+          panL.pan.setValueAtTime(-1, ctx.currentTime);
+          oscL.connect(gainL).connect(panL).connect(ctx.destination);
+
+          const panR = ctx.createStereoPanner();
+          panR.pan.setValueAtTime(1, ctx.currentTime);
+          oscR.connect(gainR).connect(panR).connect(ctx.destination);
+        } else {
+          oscL.connect(gainL).connect(ctx.destination);
+          oscR.connect(gainR).connect(ctx.destination);
+        }
+
+        oscL.start();
+        oscR.start();
+      } catch (err) {
+        console.warn('Web Audio synth failed:', err);
+      }
+    } else {
+      toast('⏸️ Neural soundscape paused', { icon: '⏸️' });
+      if (audioCtxRef.current) {
+        try { audioCtxRef.current.close(); } catch (e) {}
+        audioCtxRef.current = null;
+      }
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (audioCtxRef.current) {
+        try { audioCtxRef.current.close(); } catch (e) {}
+      }
+    };
+  }, []);
+
   const handleQuickDictation = (text: string) => {
     setQuickTaskTitle(text);
-    toast.success(`⚡ Captured via dictation: "${text}"`);
+    toast.success(`⚡ Captured via ear microphone: "${text}"`);
   };
 
   const handleCreateInstantTask = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!quickTaskTitle.trim()) return;
 
-    const toastId = toast.loading('Attaching Gemini Urgency Scorer...');
+    const toastId = toast.loading('Attaching Gemini Urgency Scorer & inserting into Matrix...');
     try {
       await fetch('/api/tasks', {
         method: 'POST',
@@ -43,8 +103,9 @@ export function CoPilotSimulatorModal({ isOpen, onClose, userName = 'Krish' }: C
           category: 'Voice Capture',
         }),
       });
-      toast.success('✨ Task created & added to Eisenhower Matrix!', { id: toastId });
+      toast.success('✨ Task created & synced to Eisenhower Matrix!', { id: toastId });
       setQuickTaskTitle('');
+      window.dispatchEvent(new Event('dz_task_created'));
     } catch (err) {
       toast.error('Failed to dispatch task', { id: toastId });
     }
@@ -102,31 +163,27 @@ export function CoPilotSimulatorModal({ isOpen, onClose, userName = 'Krish' }: C
               <input
                 type="range"
                 min={0}
-                max={8}
-                step={1}
+                max={48}
+                step={2}
                 value={procrastinationHours}
                 onChange={(e) => setProcrastinationHours(Number(e.target.value))}
-                className="w-full accent-amber-400 bg-black/40 h-2 rounded-lg cursor-pointer"
+                className="w-full accent-amber-400 h-2 bg-black/40 rounded-lg cursor-pointer"
               />
 
-              <div className="grid grid-cols-2 gap-3 pt-2">
+              <div className="grid grid-cols-2 gap-3 pt-1">
                 <div className="p-3 rounded-xl bg-black/30 border border-white/5">
-                  <div className="text-[10px] font-mono text-slate-400 uppercase">Simulated Drift Factor</div>
-                  <div className={`text-xl font-black font-mono mt-0.5 ${procrastinationHours > 3 ? 'text-red-400' : 'text-emerald-400'}`}>
-                    {simulatedVelocityDrift}x
-                  </div>
+                  <div className="text-[10px] text-slate-400 font-mono uppercase">Simulated Drift Factor</div>
+                  <div className="text-lg font-black font-mono text-emerald-400 mt-0.5">{simulatedVelocityDrift}x</div>
                 </div>
                 <div className="p-3 rounded-xl bg-black/30 border border-white/5">
-                  <div className="text-[10px] font-mono text-slate-400 uppercase">Downstream Risk Surge</div>
-                  <div className={`text-xl font-black font-mono mt-0.5 ${procrastinationHours > 0 ? 'text-amber-400 animate-pulse' : 'text-slate-300'}`}>
-                    +{simulatedRiskSurge}%
-                  </div>
+                  <div className="text-[10px] text-slate-400 font-mono uppercase">Downstream Risk Surge</div>
+                  <div className="text-lg font-black font-mono text-red-400 mt-0.5">+{simulatedRiskSurge}%</div>
                 </div>
               </div>
 
-              {procrastinationHours > 4 && (
-                <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="text-[11px] font-mono text-red-300 bg-red-500/10 p-2.5 rounded-xl border border-red-500/30 flex items-center gap-2">
-                  <ShieldAlert className="w-4 h-4 text-red-400 shrink-0" />
+              {procrastinationHours >= 12 && (
+                <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs font-mono flex items-center gap-2">
+                  <ShieldAlert className="w-4 h-4 text-red-400 shrink-0 animate-pulse" />
                   CRITICAL: Slippage exceeds safety margin! Gemini will trigger emergency calendar lockdown.
                 </motion.div>
               )}
@@ -162,11 +219,9 @@ export function CoPilotSimulatorModal({ isOpen, onClose, userName = 'Krish' }: C
                 </div>
               </div>
               <button
-                onClick={() => {
-                  setIsPlayingVibe(!isPlayingVibe);
-                  toast(isPlayingVibe ? '⏸️ Neural focus music paused' : '🎧 Playing lofi binaural soundscape...', { icon: isPlayingVibe ? '⏸️' : '🎧' });
-                }}
-                className={`px-3 py-1.5 rounded-xl font-mono text-xs font-bold transition-all flex items-center gap-1.5 ${
+                type="button"
+                onClick={() => toggleBinauralBeats(!isPlayingVibe)}
+                className={`px-3 py-1.5 rounded-xl font-mono text-xs font-bold transition-all flex items-center gap-1.5 active:scale-95 ${
                   isPlayingVibe ? 'bg-pink-500/20 border border-pink-500/50 text-pink-300 shadow-[0_0_15px_rgba(236,72,153,0.3)]' : 'bg-white/10 hover:bg-white/20 text-white'
                 }`}
               >
