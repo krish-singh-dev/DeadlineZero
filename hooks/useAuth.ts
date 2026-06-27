@@ -123,7 +123,23 @@ export function useAuth() {
       }
       return gUser;
     } catch (err: any) {
-      console.warn('Firebase Auth popup offline/unconfigured. Engaging Mock Google Login:', err.message);
+      console.warn('Firebase Auth popup error:', err.code, err.message);
+      if (err.code === 'auth/unauthorized-domain') {
+        throw new Error('⚠️ Domain not authorized! Add this domain to Firebase Console -> Authentication -> Authorized domains.');
+      }
+      if (err.code === 'auth/popup-closed-by-user') {
+        throw new Error('Google sign-in popup was closed.');
+      }
+      if (err.code === 'auth/popup-blocked') {
+        throw new Error('Popup blocked by browser. Please allow popups for this website.');
+      }
+      
+      const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+      if (!isLocal) {
+        throw new Error(err.message || 'Google authentication failed.');
+      }
+
+      console.warn('Local dev fallback: Engaging Mock Google Login');
       const mockGoogleUser = {
         uid: 'demo_krish_uid',
         displayName: 'Krish Singh (Google)',
