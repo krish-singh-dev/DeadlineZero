@@ -60,21 +60,14 @@ export function useAuth() {
             setProfile(userDocSnap.data() as UserProfile);
             setNeedsOnboarding(false);
           } else {
+            setProfile(null);
             setNeedsOnboarding(true);
           }
         } catch (err: any) {
-          console.warn('Firestore offline (using local profile fallback):', err.message);
-          const fallbackProfile: UserProfile = {
-            uid: firebaseUser.uid,
-            name: firebaseUser.displayName || 'Krish',
-            email: firebaseUser.email || 'krish@deadlinezero.app',
-            role: 'entrepreneur',
-            createdAt: new Date().toISOString(),
-            preferences: { workingHours: { start: '09:00', end: '18:00' }, timezone: 'IST', focusDuration: 120, quietHours: { start: '22:00', end: '07:00' }, emailDigestEnabled: true },
-            behaviorProfile: { mostProductiveHours: [10, 14, 16], avgEstimationError: 1.25, procrastinationIndex: 35, strongestCategories: ['Core AI'] }
-          };
-          setProfile(fallbackProfile);
-          setNeedsOnboarding(false);
+          console.warn('Firestore error during profile sync:', err.message);
+          if (!useAuthStore.getState().profile) {
+            setNeedsOnboarding(true);
+          }
         }
       } else {
         setProfile(null);
@@ -89,37 +82,22 @@ export function useAuth() {
   const loginWithGoogle = async () => {
     setError(null);
     try {
-      const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-      const timeoutDuration = isLocal ? 2000 : 90000;
-      const popupPromise = signInWithPopup(auth, googleProvider);
-      const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Firebase OAuth timeout')), timeoutDuration));
-      const result: any = await Promise.race([popupPromise, timeoutPromise]);
+      const result = await signInWithPopup(auth, googleProvider);
       const gUser = result.user;
-
-      if (gUser) {
-        try {
-          const userDocRef = doc(db, 'users', gUser.uid);
-          const snap = await getDoc(userDocRef);
-          if (!snap.exists()) {
-            const initialProfile: UserProfile = {
-              uid: gUser.uid,
-              name: gUser.displayName || 'Google User',
-              email: gUser.email || '',
-              role: 'entrepreneur',
-              photoURL: gUser.photoURL || undefined,
-              createdAt: new Date().toISOString(),
-              preferences: { workingHours: { start: '09:00', end: '18:00' }, timezone: 'IST', focusDuration: 120, quietHours: { start: '22:00', end: '07:00' }, emailDigestEnabled: true },
-              behaviorProfile: { mostProductiveHours: [10, 14, 16], avgEstimationError: 1.15, procrastinationIndex: 20, strongestCategories: ['Core AI'] }
-            };
-            await setDoc(userDocRef, initialProfile);
-            setProfile(initialProfile);
-          } else {
-            setProfile(snap.data() as UserProfile);
-          }
+      setUser(gUser);
+      try {
+        const userDocRef = doc(db, 'users', gUser.uid);
+        const snap = await getDoc(userDocRef);
+        if (snap.exists()) {
+          setProfile(snap.data() as UserProfile);
           setNeedsOnboarding(false);
-        } catch (dbErr) {
-          console.warn('Could not save Google profile to Firestore:', dbErr);
+        } else {
+          setProfile(null);
+          setNeedsOnboarding(true);
         }
+      } catch (dbErr) {
+        console.warn('Firestore offline during login check:', dbErr);
+        setNeedsOnboarding(true);
       }
       return gUser;
     } catch (err: any) {
@@ -133,34 +111,7 @@ export function useAuth() {
       if (err.code === 'auth/popup-blocked') {
         throw new Error('Popup blocked by browser. Please allow popups for this website.');
       }
-      
-      const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-      if (!isLocal) {
-        throw new Error(err.message || 'Google authentication failed.');
-      }
-
-      console.warn('Local dev fallback: Engaging Mock Google Login');
-      const mockGoogleUser = {
-        uid: 'demo_krish_uid',
-        displayName: 'Krish Singh (Google)',
-        email: 'krish@deadlinezero.app',
-        photoURL: 'https://api.dicebear.com/7.x/bottts/svg?seed=KrishGoogle',
-        emailVerified: true,
-      } as any;
-      const fallbackProfile: UserProfile = {
-        uid: 'demo_krish_uid',
-        name: 'Krish Singh',
-        email: 'krish@deadlinezero.app',
-        role: 'entrepreneur',
-        createdAt: new Date().toISOString(),
-        preferences: { workingHours: { start: '09:00', end: '18:00' }, timezone: 'IST', focusDuration: 120, quietHours: { start: '22:00', end: '07:00' }, emailDigestEnabled: true },
-        behaviorProfile: { mostProductiveHours: [10, 14, 16], avgEstimationError: 1.15, procrastinationIndex: 20, strongestCategories: ['Core AI'] }
-      };
-      try { await setDoc(doc(db, 'users', 'demo_krish_uid'), fallbackProfile); } catch (e) {}
-      setUser(mockGoogleUser);
-      setProfile(fallbackProfile);
-      setNeedsOnboarding(false);
-      return mockGoogleUser;
+      throw new Error(err.message || 'Google authentication failed.');
     }
   };
 
@@ -170,7 +121,7 @@ export function useAuth() {
     try {
       const newProfile: UserProfile = {
         uid: user.uid,
-        name: user.displayName || 'User',
+        name: user.displayName || user.email?.split('@')[0] || 'User',
         email: user.email || '',
         role,
         photoURL: user.photoURL || undefined,
@@ -184,13 +135,17 @@ export function useAuth() {
         },
       };
 
-      await setDoc(doc(db, 'users', user.uid), newProfile);
+      try {
+        await setDoc(doc(db, 'users', user.uid), newProfile);
+      } catch (dbErr) {
+        console.warn('Firestore write failed, using local profile session:', dbErr);
+      }
       setProfile(newProfile);
       setNeedsOnboarding(false);
       return newProfile;
     } catch (err: any) {
       console.error('Onboarding completion error:', err);
-      setError(err.message || 'Failed to save user preferences');
+      setError(err.message || 'Failed to complete onboarding');
       throw err;
     }
   };
