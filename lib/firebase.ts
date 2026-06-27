@@ -19,11 +19,11 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const googleProvider = new GoogleAuthProvider();
 
-// Request offline access so we receive Google Calendar access + refresh tokens
-googleProvider.addScope('https://www.googleapis.com/auth/calendar.events');
-googleProvider.setCustomParameters({
-  access_type: 'offline',
-  prompt: 'consent'
-});
+// Request offline access so we receive Google Calendar access + refresh tokens (Commented out to bypass sensitive scope warning during Hackathon demo)
+// googleProvider.addScope('https://www.googleapis.com/auth/calendar.events');
+// googleProvider.setCustomParameters({
+//   access_type: 'offline',
+//   prompt: 'consent'
+// });
 
 export default app;

@@ -58,6 +58,7 @@ export function VoiceInput({ onTranscript, disabled = false }: VoiceInputProps) 
         console.warn('SpeechRecognition init failed:', e);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onTranscript]);
 
   const toggleListening = () => {

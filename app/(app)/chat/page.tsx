@@ -156,39 +156,11 @@ export default function ChatPage() {
           </div>
         ) : (
           messages.map((msg, i) => (
-            <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} gap-3`}>
-              {msg.role !== 'user' && (
-                <div className="w-8 h-8 rounded-xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 shrink-0 mt-1">
-                  <Bot className="w-4 h-4" />
-                </div>
-              )}
-              <div className={`p-4 rounded-2xl max-w-[85%] sm:max-w-[75%] text-sm font-sans ${
-                msg.role === 'user'
-                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20 rounded-br-none'
-                  : 'bg-[#1C1C28] text-slate-200 border border-white/5 rounded-bl-none font-mono text-xs leading-relaxed space-y-2'
-              }`}>
-                {msg.role !== 'user' ? (
-                  <ReactMarkdown
-                    components={{
-                      a: ({ node, ...props }) => <a {...props} className="text-indigo-400 hover:underline font-bold" target="_blank" />,
-                      code: ({ node, ...props }) => <code {...props} className="bg-black/50 text-amber-300 px-1.5 py-0.5 rounded font-mono text-[11px]" />,
-                      p: ({ node, ...props }) => <p {...props} className="mb-2 last:mb-0" />,
-                    }}
-                  >
-                    {msg.content}
-                  </ReactMarkdown>
-                ) : (
-                  msg.content
-                )}
-                {/* @ts-ignore */}
-                {msg.actionsExecuted && msg.actionsExecuted.length > 0 && (
-                  <div className="pt-2 mt-2 border-t border-white/10 text-[10px] text-emerald-400 font-mono flex items-center gap-1">
-                    <ShieldCheck className="w-3 h-3" />
-                    <span>Database mutations autonomously committed</span>
-                  </div>
-                )}
-              </div>
-            </div>
+            <ChatBubble
+              key={msg.id || i}
+              message={msg}
+              onCompleteTask={handleCompleteTask}
+            />
           ))
         )}
 

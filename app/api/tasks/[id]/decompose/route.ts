@@ -30,6 +30,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         riskScore: 50,
         category: 'Development',
         aiDecomposed: false,
+        subtasks: [],
       };
     }
 
