@@ -1,64 +1,133 @@
-<p align="center">
-  <img src="https://header.capsuledotengine.com/header?type=waving&color=gradient&customColorList=12,18,24,30&height=240&section=header&text=DeadlineZero%20⚡&fontSize=68&fontAlignY=36&desc=Autonomous%20AI%20Co-Pilot%20&%20Slippage%20Intervention%20Engine&descAlignY=56&descSize=21&fontColor=ffffff" alt="DeadlineZero Header" />
+﻿<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=12,18,24,30&height=260&section=header&text=DeadlineZero%20%E2%9A%A1&fontSize=72&fontAlignY=38&animation=fadeIn&desc=Autonomous%20AI%20Co-Pilot%20%7C%20Zero%20Slippage.%20Maximum%20Velocity.&descAlignY=58&descSize=20&fontColor=ffffff" alt="DeadlineZero Header" />
 </p>
 
 <p align="center">
-  <a href="https://github.com/krish-singh-dev/DeadlineZero">
-    <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=800&size=26&pause=1000&color=8B5CF6&center=true&vCenter=true&multiline=true&width=800&height=100&lines=⚡+Zero+Slippage.+Maximum+Velocity.;🚀+Powered+by+Google+DeepMind+Gemini+2.5+Flash;🧠+Autonomous+Risk+Telemetry+%26+Eisenhower+Matrix" alt="Typing SVG" />
+  <a href="https://deadlinezero-240522717078.us-central1.run.app/" target="_blank">
+    <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=800&size=24&pause=1000&color=8B5CF6&center=true&vCenter=true&multiline=true&width=900&height=100&lines=%E2%9A%A1+Zero+Slippage.+Maximum+Velocity.+Live+Now!;%F0%9F%9A%80+Powered+by+Google+Gemini+2.5+Flash+AI;%F0%9F%A7%A0+Autonomous+Risk+Telemetry+%26+Eisenhower+Matrix;%F0%9F%94%A5+Built+for+Vibe2Ship+%7C+Coding+Ninjas+%C3%97+Google" alt="Typing SVG" />
   </a>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Next.js_14-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js" />
-  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
-  <img src="https://img.shields.io/badge/Gemini_2.5_Flash-8E75B2?style=for-the-badge&logo=google&logoColor=white" alt="Gemini" />
-  <img src="https://img.shields.io/badge/Firebase_Admin-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="Firebase" />
-  <img src="https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white" alt="Framer Motion" />
+  <a href="https://deadlinezero-240522717078.us-central1.run.app/">
+    <img src="https://img.shields.io/badge/%F0%9F%9A%80%20LIVE%20DEMO-Click%20to%20Launch-8B5CF6?style=for-the-badge&logoColor=white" alt="Live Demo" />
+  </a>
+  <a href="https://github.com/krish-singh-dev/DeadlineZero">
+    <img src="https://img.shields.io/badge/GitHub-DeadlineZero-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
+  </a>
+  <img src="https://img.shields.io/badge/Status-Production%20Live-22c55e?style=for-the-badge" alt="Status" />
+  <img src="https://img.shields.io/badge/Hackathon-Vibe2Ship%202026-FF6B35?style=for-the-badge" alt="Hackathon" />
 </p>
-
----
 
 <p align="center">
-  <img src="./public/hero_banner.png" alt="DeadlineZero AI Command Center" width="92%" style="border-radius: 20px; box-shadow: 0 0 40px rgba(139, 92, 246, 0.4);" />
+  <img src="https://img.shields.io/badge/Next.js_14-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" />
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
+  <img src="https://img.shields.io/badge/Gemini_2.5_Flash-8E75B2?style=for-the-badge&logo=google&logoColor=white" />
+  <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" />
+  <img src="https://img.shields.io/badge/Cloud_Run-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white" />
+  <img src="https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white" />
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
 </p>
 
 ---
-
-## 🌟 Overview
-
-> **DeadlineZero** is a state-of-the-art, zero-trust autonomous project management platform built specifically for high-velocity entrepreneurs, creators, and developers. It replaces static to-do lists with **live risk telemetry**, attaching dynamic urgency coefficients and predictive slippage buffers to every sprint task.
-
-Traditional productivity tools track what you *hope* to do. **DeadlineZero** actively intervenes to ensure you *actually ship it*.
-
----
-
-## ⚡ Key Autonomous AI Differentiators
 
 <div align="center">
 
-| 🧠 Autonomous Agent | 🎯 Mission Capability | 🎨 UI / UX Semantics |
-| :--- | :--- | :--- |
-| **🤖 Conversational Co-Pilot** | Natural language sprint scheduling, live database mutations, & voice transcription. | Glowing neon indigo chat bubbles & real-time toast feedback. |
-| **📈 Autonomous Risk Engine** | Dynamically calculates `0–100` urgency drift scores based on estimation factor math. | Color-coded Eisenhower tiers 🟢 Green / 🟡 Yellow / 🟠 Orange / 🔴 Red. |
-| **✨ AI Task Decomposer** | Breaks down intimidating monolithic projects into 3–5 bite-sized sprint steps. | Smooth framer-motion collapsible step accordions. |
-| **🔄 Telemetry Velocity Loop** | Calibrates historical user procrastination coefficients to recalibrate slippage margins. | Real-time burn-down completion telemetry gauges. |
-| **🌅 Morning Briefing Agent** | Synthesizes a daily executive briefing and pre-locks peak energetic focus hours. | Ambient glassmorphism hero banner with glowing neon blurs. |
+## 🌐 Live Deployment
+
+### 👉 [https://deadlinezero-240522717078.us-central1.run.app/](https://deadlinezero-240522717078.us-central1.run.app/)
+
+> Hosted on **Google Cloud Run** — Serverless, Auto-scaling, Production-grade
 
 </div>
 
 ---
 
-## 🎨 Rich Aesthetic & Design Philosophy
+## 🌟 What is DeadlineZero?
 
-DeadlineZero is engineered to wow at first glance:
-* **🌌 Cyberpunk Dark Mode:** Deep `#0B0B10` backgrounds paired with vibrant neon indigo (`#8B5CF6`), emerald (`#10B981`), and amber (`#F59E0B`) accents.
-* **🔮 Glassmorphism UI:** Translucent backdrops, subtle micro-borders (`border-white/5`), and ambient multi-color light blurs.
-* **⚡ Micro-Animations:** Responsive hover glows, pulsing risk badges, animated progress bars, and fluid layout transitions via `framer-motion`.
+> **DeadlineZero** is a state-of-the-art **Autonomous AI Co-Pilot** that goes beyond task management. It **proactively rescues your deadlines** before they are ever missed — not by reminding you, but by *acting on your behalf*.
+
+Traditional productivity tools track what you *hope* to do.  
+**DeadlineZero actively intervenes** to ensure you *actually ship it*.
+
+```
+"Don't just remind. Act Autonomously."
+```
 
 ---
 
-## 🚀 Quickstart & Setup
+## ⚡ Feature Showcase
+
+<div align="center">
+
+| Module | Capability | Visual Experience |
+| :---: | :--- | :--- |
+| 🤖 **Risk Engine** | Dynamic 0–100 urgency score per task using Eisenhower Matrix math | 🟢 On Track · 🟡 Watch · 🟠 High Risk · 🔴 Critical |
+| 🧠 **AI Decomposer** | Gemini breaks complex goals into 3–5 executable sprint steps | Smooth Framer Motion accordion cards |
+| 💬 **Chat Co-Pilot** | Full AI chat with voice input, executes real Firestore mutations | Glowing neon indigo chat bubbles |
+| 📅 **Calendar Blocks** | AI autonomously pre-blocks Google Calendar focus windows | Pomodoro sprint overlay with live timer |
+| 🌅 **Morning Briefing** | Daily executive AI summary — your personalized priority brief | Glassmorphism hero card with ambient glow |
+| 📊 **Analytics** | Burn-down charts, completion velocity, procrastination index | Recharts real-time telemetry |
+| 🔐 **Zero-Trust Auth** | Google OAuth with Firestore row-level isolation | Firebase Admin SDK verified sessions |
+| ⚡ **Demo Mode** | One-click instant demo login — no sign-in required for judges | Instant access to full app features |
+
+</div>
+
+---
+
+## 🎨 Design Philosophy
+
+DeadlineZero is engineered to **wow at first glance**:
+
+- 🌌 **Cyberpunk Dark Mode** — Deep `#0A0A0F` backgrounds with vibrant neon indigo `#8B5CF6`, emerald `#10B981`, and amber `#F59E0B` accents
+- 🔮 **Glassmorphism UI** — Translucent cards, micro-borders, and ambient multi-color light blurs
+- ⚡ **Micro-Animations** — Responsive hover glows, pulsing risk badges, animated progress bars via `framer-motion`
+- 🎯 **Risk-First Design** — Color language that communicates urgency without a single word
+
+---
+
+## 🏗️ Architecture & Telemetry Pipeline
+
+```mermaid
+graph TD
+    A[👤 User / Voice Input] -->|Natural Language| B(💬 Next.js App Router API)
+    B --> C{🧠 Gemini 2.5 Flash Core}
+    C -->|Task Parsing| D[⚡ Autonomous Agent Engine]
+    C -->|Briefing Gen| H[🌅 Morning Brief Generator]
+    D -->|CREATE / COMPLETE / DECOMPOSE| E[(🔥 Cloud Firestore)]
+    D -->|Risk Calculation| F[📊 Eisenhower Matrix Engine]
+    D -->|Focus Blocks| G[📅 Google Calendar API]
+    F -->|Live Risk Score| I[💻 Glassmorphism Client UI]
+    E -->|Real-time Sync| I
+    style C fill:#8B5CF6,color:#fff
+    style D fill:#7C3AED,color:#fff
+    style E fill:#F59E0B,color:#000
+    style G fill:#10B981,color:#fff
+```
+
+---
+
+## 🌐 Google Cloud Stack
+
+```
+┌─────────────────────────────────────────────────────┐
+│              GOOGLE CLOUD ECOSYSTEM                 │
+├──────────────────┬──────────────────────────────────┤
+│ 🤖 Gemini 2.5   │  AI Reasoning · Decompose · Chat  │
+│ 🔥 Firestore    │  Real-time NoSQL · User Isolation  │
+│ 🔐 Firebase Auth│  Google OAuth 2.0 · JWT Tokens    │
+│ ☁️  Cloud Run   │  Serverless · Auto-scale · HTTPS  │
+│ 📦 Artifact Reg │  Docker Image Storage · CI/CD     │
+│ 🏗️  Cloud Build │  Automated Build Pipeline         │
+│ 📅 Calendar API │  Autonomous Focus Block Creation   │
+│ 🛡️  IAM         │  Service Account Permissions      │
+└──────────────────┴──────────────────────────────────┘
+```
+
+---
+
+## 🚀 Local Development Setup
 
 ### 1️⃣ Clone the Repository
 ```bash
@@ -71,42 +140,77 @@ cd DeadlineZero
 npm install
 ```
 
-### 3️⃣ Configure Environment Secrets
-Create a `.env` file in the root directory (refer to `.env.example`):
+### 3️⃣ Configure Environment Variables
+Create a `.env` file in the root directory (see `.env.example`):
 ```env
-PORT=8080
 NODE_ENV=development
-
-# Google DeepMind Gemini Reasoning Engine
-GEMINI_API_KEY="AIzaSyYourActualGeminiKeyHere..."
-
-# Firebase Client & Admin Credentials
-NEXT_PUBLIC_FIREBASE_PROJECT_ID="deadlinezero-574ba"
+PORT=3000
+GEMINI_API_KEY=your_gemini_api_key_here
+NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+FIREBASE_SERVICE_ACCOUNT_KEY={"type":"service_account",...}
+GOOGLE_CALENDAR_CLIENT_ID=your_client_id
+GOOGLE_CALENDAR_CLIENT_SECRET=your_client_secret
 ```
 
-### 4️⃣ Launch Co-Pilot Command Center
+### 4️⃣ Launch Development Server
 ```bash
 npm run dev
 ```
-
-Visit [http://localhost:3000](http://localhost:3000) to enter your command center.
+Open [http://localhost:3000](http://localhost:3000) — your AI Co-Pilot Command Center awaits!
 
 ---
 
-## 📐 Architecture & Telemetry Pipeline
+## 🐳 Production Docker Build
 
-```mermaid
-graph TD
-    A[👤 User Prompt / Voice Input] -->|NextRequest| B(🤖 Next.js App Router API)
-    B --> C{🧠 Gemini 2.5 Flash Core}
-    C -->|Intent Parse| D[⚡ Autonomous Agent Engine]
-    D -->|CREATE / COMPLETE| E[(🔥 Firestore Isolation DB)]
-    D -->|Risk Calculation| F[📊 Eisenhower Matrix Telemetry]
-    F -->|Real-time Snapshot| G[💻 Glassmorphism Client Feed]
+```bash
+docker build -t deadlinezero .
+docker run -p 8080:8080 --env-file .env deadlinezero
 ```
+
+---
+
+## 📦 Tech Stack
+
+| Category | Technology | Version |
+|---|---|---|
+| Framework | Next.js (App Router) | 14.2.4 |
+| Language | TypeScript | ^5 |
+| Styling | Tailwind CSS | ^3.4 |
+| Animations | Framer Motion | ^12 |
+| State | Zustand | ^5 |
+| AI SDK | @google/generative-ai | ^0.24 |
+| Database | Firebase / Firestore | ^12 |
+| Charts | Recharts | ^3.9 |
+| Validation | Zod | ^4 |
+
+---
+
+## 🔗 Project Links
+
+| Resource | Link |
+|---|---|
+| 🚀 **Live App** | https://deadlinezero-240522717078.us-central1.run.app/ |
+| 📦 **GitHub Repo** | https://github.com/krish-singh-dev/DeadlineZero |
+| 🏆 **Hackathon** | Vibe2Ship — Coding Ninjas × Google for Developers |
+
+---
+
+## 🏆 Hackathon Alignment (Vibe2Ship 2026)
+
+- ✅ **Real Problem** — Productivity collapse & missed deadlines affecting millions
+- ✅ **AI-First** — Gemini 2.5 Flash is the core reasoning engine, not an afterthought
+- ✅ **Google Native** — Firebase, Cloud Run, Firestore, Calendar API, Gemini — full Google stack
+- ✅ **Production Deployed** — Live URL, containerized with Docker, served via Cloud Run
+- ✅ **Demo Ready** — One-click instant demo mode, zero friction for judges
 
 ---
 
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=30,24,18,12&height=140&section=footer" alt="DeadlineZero Footer" />
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=30,24,18,12&height=180&section=footer&animation=fadeIn&text=Built%20for%20Vibe2Ship%20%F0%9F%9A%80&fontSize=28&fontColor=ffffff&fontAlignY=65" alt="DeadlineZero Footer" />
+</p>
+
+<p align="center">
+  <strong>Made with ❤️ by Krish Singh &nbsp;·&nbsp; Vibe2Ship Hackathon 2026 &nbsp;·&nbsp; Coding Ninjas × Google for Developers</strong>
 </p>
